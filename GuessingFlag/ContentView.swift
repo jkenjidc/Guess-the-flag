@@ -48,15 +48,6 @@ struct ContentView: View {
                         }
                         
                     }
-//                    if round < 8 {
-//                        Text("Round \(round+1)/8")
-//                            .font(.title.bold())
-//                            .foregroundColor(.black)
-//                    } else {
-//                        Text("Round 8/8")
-//                            .font(.title.bold())
-//                            .foregroundColor(.black)
-//                    }
                     Text("Round \(round < 9 ? round : 8)/8")
                         .font(.title.bold())
                         .foregroundColor(.black)
