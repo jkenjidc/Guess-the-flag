@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var score = 0
+    @State private var round = 0
     @State private var showingScore = false
+    @State private var gameOver = false
     @State private var scoreTitle = ""
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     
@@ -46,6 +48,15 @@ struct ContentView: View {
                         }
                         
                     }
+                    if round < 8 {
+                        Text("Round \(round+1)/8")
+                            .font(.title.bold())
+                            .foregroundColor(.black)
+                    } else {
+                        Text("Round 8/8")
+                            .font(.title.bold())
+                            .foregroundColor(.black)
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
@@ -67,13 +78,22 @@ struct ContentView: View {
         }message: {
             Text("Your score is \(score)")
         }
+        .alert("Game over",isPresented: $gameOver){
+            Button("Reset", action: resetGame)
+        }message: {
+            Text("Final score: \(score)")
+        }
     }
     func flagTapped(_ number: Int){
+        round += 1
+        if round == 8 {
+            gameOver = true
+        }
         if number == correctAnswer{
             scoreTitle = "Correct"
             score += 1
         }else{
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong! thats the flag of \(countries[number])"
         }
         showingScore = true
     }
@@ -81,6 +101,12 @@ struct ContentView: View {
     func askQuestion(){
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    func resetGame(){
+        score = 0
+        round = 0
+        showingScore =  false
     }
 }
 
