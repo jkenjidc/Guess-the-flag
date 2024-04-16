@@ -14,8 +14,11 @@ struct ContentView: View {
     @State private var gameOver = false
     @State private var scoreTitle = ""
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
-    
+    @State private var animationAmount = Array(stride(from: 1.0, through: 3.0, by: 1.0))
+    @State private var opacityAmount = Array(stride(from: 1.0, through: 1.3, by: 0.1))
+
     @State private var correctAnswer = Int.random(in: 0...2)
+    @State private var clickedButton = 0
     var body: some View {
         ZStack{
             RadialGradient(stops: [
@@ -45,6 +48,8 @@ struct ContentView: View {
                                 .renderingMode(.original)
                                 .clipShape(Capsule())
                                 .shadow(radius: 5)
+                                .rotation3DEffect(.degrees(animationAmount[number]), axis: (x: 0, y: 1, z: 0))
+                                .opacity(opacityAmount[number])
                         }
                         
                     }
@@ -86,11 +91,20 @@ struct ContentView: View {
         }else{
             scoreTitle = "Wrong! thats the flag of \(countries[number])"
         }
+        clickedButton = number
+        withAnimation{
+            animationAmount[number] += 360.0
+            opacityAmount[number - 1 < 0 ? 1 : number - 1 ] -= 0.75
+            opacityAmount[number + 1 > 2 ? 2: number + 1] -= 0.75
+
+        }
+
         showingScore = true
     }
     
     func askQuestion(){
         countries.shuffle()
+        opacityAmount = Array(stride(from: 1.0, through: 1.3, by: 0.1))
         correctAnswer = Int.random(in: 0...2)
         round += 1
         if round == 9 {
