@@ -94,8 +94,23 @@ struct ContentView: View {
         clickedButton = number
         withAnimation{
             animationAmount[number] += 360.0
-            opacityAmount[number - 1 < 0 ? 1 : number - 1 ] -= 0.75
-            opacityAmount[number + 1 > 2 ? 2: number + 1] -= 0.75
+            switch number {
+            case 0:
+                opacityAmount[1] -= 0.75
+                animationAmount[1] -= 360.0
+                opacityAmount[2] -= 0.75
+                animationAmount[2] -= 360.0
+            case 1:
+                opacityAmount[0] -= 0.75
+                animationAmount[0] -= 360.0
+                opacityAmount[2] -= 0.75
+                animationAmount[2] -= 360.0
+            default:
+                opacityAmount[0] -= 0.75
+                animationAmount[0] -= 360.0
+                opacityAmount[1] -= 0.75
+                animationAmount[1] -= 360.0
+            }
 
         }
 
